@@ -40,52 +40,42 @@ export default function FeaturesPage() {
                   <div className="gps-feature-pill">
                     <span className="gps-feature-pill-icon">🌐</span>
                     <div className="gps-feature-pill-content">
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
-                        <span className="gps-feature-pill-name">Live Location Engine</span>
-                        <span style={{ fontSize: 9, padding: "2px 6px", background: "var(--color-primary)", color: "#000", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>LIVE</span>
-                      </div>
-                      <span className="gps-feature-pill-desc">Pinpoints exact position instantly</span>
+                      <span className="gps-feature-pill-name">Live Location Engine</span>
+                      <span className="gps-feature-pill-desc">Pinpoints every driver instantly, no setup required</span>
                     </div>
+                    <span className="gps-badge">ALWAYS ON</span>
                   </div>
                   <div className="gps-feature-pill">
                     <span className="gps-feature-pill-icon">⚡</span>
                     <div className="gps-feature-pill-content">
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
-                        <span className="gps-feature-pill-name">Instant Signal Relay</span>
-                        <span style={{ fontSize: 9, padding: "2px 6px", background: "rgba(255,255,255,0.1)", color: "var(--color-text-secondary)", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>ALWAYS ON</span>
-                      </div>
-                      <span className="gps-feature-pill-desc">Broadcasts movement without page reloads</span>
+                      <span className="gps-feature-pill-name">Instant Signal Relay</span>
+                      <span className="gps-feature-pill-desc">Location data reaches the dashboard in milliseconds</span>
                     </div>
+                    <span className="gps-badge">LIVE</span>
                   </div>
                   <div className="gps-feature-pill">
                     <span className="gps-feature-pill-icon">🐘</span>
                     <div className="gps-feature-pill-content">
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
-                        <span className="gps-feature-pill-name">Smart Location Memory</span>
-                        <span style={{ fontSize: 9, padding: "2px 6px", background: "rgba(255,255,255,0.1)", color: "var(--color-text-secondary)", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>AUTO</span>
-                      </div>
-                      <span className="gps-feature-pill-desc">Stores histories for audit and playback</span>
+                      <span className="gps-feature-pill-name">Smart Location Memory</span>
+                      <span className="gps-feature-pill-desc">Every route recorded and queryable on a map grid</span>
                     </div>
+                    <span className="gps-badge">AUTO SYNC</span>
                   </div>
                   <div className="gps-feature-pill">
                     <span className="gps-feature-pill-icon">💾</span>
                     <div className="gps-feature-pill-content">
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
-                        <span className="gps-feature-pill-name">Offline Journey Buffer</span>
-                        <span style={{ fontSize: 9, padding: "2px 6px", background: "var(--color-accent)", color: "#000", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>SMART</span>
-                      </div>
-                      <span className="gps-feature-pill-desc">Saves location locally when signal drops</span>
+                      <span className="gps-feature-pill-name">Offline Journey Buffer</span>
+                      <span className="gps-feature-pill-desc">Stores the route locally when signal drops, syncs on return</span>
                     </div>
+                    <span className="gps-badge">OFFLINE SAFE</span>
                   </div>
                   <div className="gps-feature-pill">
                     <span className="gps-feature-pill-icon">🧮</span>
                     <div className="gps-feature-pill-content">
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
-                        <span className="gps-feature-pill-name">Smooth Path Prediction</span>
-                        <span style={{ fontSize: 9, padding: "2px 6px", background: "rgba(255,255,255,0.1)", color: "var(--color-text-secondary)", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>AI ENGINE</span>
-                      </div>
-                      <span className="gps-feature-pill-desc">Fills gaps dynamically if connection fails</span>
+                      <span className="gps-feature-pill-name">Smooth Path Prediction</span>
+                      <span className="gps-feature-pill-desc">Fills in the gaps when GPS signal is temporarily lost</span>
                     </div>
+                    <span className="gps-badge">AI ASSIST</span>
                   </div>
                 </div>
               </div>
@@ -93,11 +83,10 @@ export default function FeaturesPage() {
               <div className="card-flat" style={{ position: "sticky", top: 120 }}>
                 <div style={{ fontFamily: "var(--font-data)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-text-muted)", marginBottom: 16 }}>Key Capabilities</div>
                 <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Tracks every driver every 10 seconds automatically</span></li>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Predicts position even when signal drops</span></li>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Saves your route offline, syncs when back online</span></li>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Shows you exactly where drivers are on the map</span></li>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Flags the difference between real and predicted spots</span></li>
+                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Updates driver position every 10 seconds automatically</span></li>
+                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Predicts where a driver is even when signal drops</span></li>
+                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Never loses a location update, even in no-signal zones</span></li>
+                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Shows clearly when a position is live vs estimated</span></li>
                 </ul>
               </div>
             </div>
