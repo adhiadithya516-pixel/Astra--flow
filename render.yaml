@@ -1,4 +1,5 @@
 services:
+  # ─── FastAPI Backend ───
   - type: web
     name: astra-flow-api
     runtime: python
@@ -13,6 +14,7 @@ services:
       - key: PYTHON_VERSION
         value: "3.12"
 
+  # ─── WebSocket Relay Server ───
   - type: web
     name: astra-flow-ws
     runtime: node
@@ -24,9 +26,8 @@ services:
         sync: false
       - key: SUPABASE_SERVICE_KEY
         sync: false
-      - key: PORT
-        value: "3001"
 
+  # ─── Next.js Frontend ───
   - type: web
     name: astra-flow-frontend
     runtime: node
@@ -37,6 +38,10 @@ services:
       - key: NEXT_PUBLIC_SUPABASE_URL
         sync: false
       - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
+      - key: NEXT_PUBLIC_WS_URL
         sync: false
       - key: BACKEND_URL
         sync: false
