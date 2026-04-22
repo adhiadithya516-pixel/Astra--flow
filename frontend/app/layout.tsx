@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import ClientShell from "@/components/layout/ClientShell";
 
 export const metadata: Metadata = {
   title: "Astra Flow — Supply Chain Resilience Platform",
   description:
-    "Real-time logistics tracking, driver monitoring, and supply chain intelligence.",
+    "Real-time logistics tracking, AI disruption detection, and proactive rerouting.",
 };
 
 export default function RootLayout({
@@ -17,7 +15,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <ClientShell>{children}</ClientShell>
+      </body>
     </html>
   );
 }
