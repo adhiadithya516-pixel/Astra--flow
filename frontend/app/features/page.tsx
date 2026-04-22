@@ -25,69 +25,57 @@ export default function FeaturesPage() {
         <div className="container-lg" style={{ maxWidth: 1000 }}>
           {/* CUSTOM GPS TRACKING SECTION */}
           <section id="tracking" className="section reveal" style={{ borderBottom: "1px solid var(--color-border-base)" }}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }} className="feat-cols">
-              <div>
-                <div className="gps-icon-wrapper">
-                  📍
-                  <div className="gps-pulse-ring"></div>
-                </div>
-                <h2 style={{ fontFamily: "var(--font-heading)", fontSize: 28, fontWeight: 700, marginBottom: 16 }}>Real-Time GPS Tracking</h2>
-                <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.7, fontSize: 15, marginBottom: 32 }}>
-                  Every driver, every second. High-precision live location updates utilizing native web APIs and advanced predictive algorithms to ensure you never lose sight of a shipment.
-                </p>
-
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                  <div className="gps-feature-pill">
-                    <span className="gps-feature-pill-icon">🌐</span>
-                    <div className="gps-feature-pill-content">
-                      <span className="gps-feature-pill-name">Live Location Engine</span>
-                      <span className="gps-feature-pill-desc">Pinpoints every driver instantly, no setup required</span>
-                    </div>
-                    <span className="gps-badge">ALWAYS ON</span>
-                  </div>
-                  <div className="gps-feature-pill">
-                    <span className="gps-feature-pill-icon">⚡</span>
-                    <div className="gps-feature-pill-content">
-                      <span className="gps-feature-pill-name">Instant Signal Relay</span>
-                      <span className="gps-feature-pill-desc">Location data reaches the dashboard in milliseconds</span>
-                    </div>
-                    <span className="gps-badge">LIVE</span>
-                  </div>
-                  <div className="gps-feature-pill">
-                    <span className="gps-feature-pill-icon">🐘</span>
-                    <div className="gps-feature-pill-content">
-                      <span className="gps-feature-pill-name">Smart Location Memory</span>
-                      <span className="gps-feature-pill-desc">Every route recorded and queryable on a map grid</span>
-                    </div>
-                    <span className="gps-badge">AUTO SYNC</span>
-                  </div>
-                  <div className="gps-feature-pill">
-                    <span className="gps-feature-pill-icon">💾</span>
-                    <div className="gps-feature-pill-content">
-                      <span className="gps-feature-pill-name">Offline Journey Buffer</span>
-                      <span className="gps-feature-pill-desc">Stores the route locally when signal drops, syncs on return</span>
-                    </div>
-                    <span className="gps-badge">OFFLINE SAFE</span>
-                  </div>
-                  <div className="gps-feature-pill">
-                    <span className="gps-feature-pill-icon">🧮</span>
-                    <div className="gps-feature-pill-content">
-                      <span className="gps-feature-pill-name">Smooth Path Prediction</span>
-                      <span className="gps-feature-pill-desc">Fills in the gaps when GPS signal is temporarily lost</span>
-                    </div>
-                    <span className="gps-badge">AI ASSIST</span>
-                  </div>
-                </div>
+            <div>
+              <div className="feat-section-icon-wrapper">
+                📍
+                <div className="feat-section-icon-ring"></div>
               </div>
+              <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(2.2rem, 4vw, 48px)", fontWeight: 700, marginBottom: 16, textAlign: "center" }}>Real-Time GPS Tracking</h2>
+              <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.7, fontSize: 16, textAlign: "center", maxWidth: 800, margin: "0 auto 48px auto" }}>
+                Every driver, every second. High-precision live location updates utilizing native web APIs and advanced predictive algorithms to ensure you never lose sight of a shipment.
+              </p>
 
-              <div className="card-flat" style={{ position: "sticky", top: 120 }}>
-                <div style={{ fontFamily: "var(--font-data)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-text-muted)", marginBottom: 16 }}>Key Capabilities</div>
-                <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Updates driver position every 10 seconds automatically</span></li>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Predicts where a driver is even when signal drops</span></li>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Never loses a location update, even in no-signal zones</span></li>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Shows clearly when a position is live vs estimated</span></li>
-                </ul>
+              <div className="feat-cards-grid">
+                <div className="feat-card-item">
+                  <div className="feat-card-icon">🌐</div>
+                  <div className="gps-feature-pill-content">
+                    <span className="gps-feature-pill-name">Live Location Engine</span>
+                    <span className="gps-feature-pill-desc">Pinpoints every driver instantly, no setup required</span>
+                  </div>
+                  <span className="gps-badge">ALWAYS ON</span>
+                </div>
+                <div className="feat-card-item">
+                  <div className="feat-card-icon">⚡</div>
+                  <div className="gps-feature-pill-content">
+                    <span className="gps-feature-pill-name">Instant Signal Relay</span>
+                    <span className="gps-feature-pill-desc">Location data reaches the dashboard in milliseconds</span>
+                  </div>
+                  <span className="gps-badge">LIVE</span>
+                </div>
+                <div className="feat-card-item">
+                  <div className="feat-card-icon">🐘</div>
+                  <div className="gps-feature-pill-content">
+                    <span className="gps-feature-pill-name">Smart Location Memory</span>
+                    <span className="gps-feature-pill-desc">Every route recorded and queryable on a map grid</span>
+                  </div>
+                  <span className="gps-badge">AUTO SYNC</span>
+                </div>
+                <div className="feat-card-item">
+                  <div className="feat-card-icon">💾</div>
+                  <div className="gps-feature-pill-content">
+                    <span className="gps-feature-pill-name">Offline Journey Buffer</span>
+                    <span className="gps-feature-pill-desc">Stores the route locally when signal drops, syncs on return</span>
+                  </div>
+                  <span className="gps-badge">OFFLINE SAFE</span>
+                </div>
+                <div className="feat-card-item">
+                  <div className="feat-card-icon">🧮</div>
+                  <div className="gps-feature-pill-content">
+                    <span className="gps-feature-pill-name">Smooth Path Prediction</span>
+                    <span className="gps-feature-pill-desc">Fills in the gaps when GPS signal is temporarily lost</span>
+                  </div>
+                  <span className="gps-badge">AI ASSIST</span>
+                </div>
               </div>
             </div>
           </section>
@@ -95,12 +83,23 @@ export default function FeaturesPage() {
           {/* DYNAMIC REMAINING SECTIONS */}
           {otherFeatures.map((f, i) => (
             <section key={f.id} id={f.id} className="section reveal" style={{ borderBottom: i < otherFeatures.length - 1 ? "1px solid var(--color-border-base)" : "none" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "start" }} className="feat-cols">
-                <div><div style={{ fontSize: 40, marginBottom: 16 }}>{f.icon}</div><h2 style={{ fontFamily: "var(--font-heading)", fontSize: 28, fontWeight: 700, marginBottom: 16 }}>{f.title}</h2><p style={{ color: "var(--color-text-secondary)", lineHeight: 1.7, fontSize: 15 }}>{f.desc}</p></div>
-                <div className="card-flat"><div style={{ fontFamily: "var(--font-data)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-text-muted)", marginBottom: 16 }}>Key Capabilities</div>
-                  <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
-                    {f.details.map((d, j) => (<li key={j} style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>{d}</span></li>))}
-                  </ul>
+              <div>
+                <div className="feat-section-icon-wrapper">
+                  {f.icon}
+                  <div className="feat-section-icon-ring"></div>
+                </div>
+                <h2 style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(2.2rem, 4vw, 48px)", fontWeight: 700, marginBottom: 16, textAlign: "center" }}>{f.title}</h2>
+                <p style={{ color: "var(--color-text-secondary)", lineHeight: 1.7, fontSize: 16, textAlign: "center", maxWidth: 800, margin: "0 auto 48px auto" }}>{f.desc}</p>
+                
+                <div className="feat-cards-grid">
+                  {f.details.map((d, j) => (
+                    <div key={j} className="feat-card-item">
+                      <div className="feat-card-icon">✨</div>
+                      <div style={{ fontSize: 15, fontWeight: 500, color: "var(--color-text-primary)", lineHeight: 1.4 }}>
+                        {d}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </section>
