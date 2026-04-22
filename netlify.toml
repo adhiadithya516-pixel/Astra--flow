@@ -1,0 +1,39 @@
+[build]
+  base = "frontend"
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+  NEXT_TELEMETRY_DISABLED = "1"
+
+# Next.js on Netlify requires the plugin
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+# Redirect API calls to your backend (update the URL after deploying your API)
+[[redirects]]
+  from = "/api/*"
+  to = "https://astra-flow-api.onrender.com/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/socket.io/*"
+  to = "https://astra-flow-ws.onrender.com/socket.io/:splat"
+  status = 200
+  force = true
+
+# SPA fallback for client-side routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Security headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

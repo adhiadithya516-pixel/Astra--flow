@@ -1,0 +1,16 @@
+{
+  "name": "astra-flow-ws",
+  "version": "1.0.0",
+  "description": "Astra Flow WebSocket relay server",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "socket.io": "^4.7.5",
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.4.5",
+    "cors": "^2.8.5"
+  }
+}
