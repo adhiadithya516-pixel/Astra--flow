@@ -161,6 +161,58 @@ io.on("connection", (socket) => {
     }
   });
 
+  // ==========================================
+  // NEW GPS TRACKING EVENTS
+  // ==========================================
+
+  /**
+   * "gps:ping" -> driver sends location every 10s
+   */
+  socket.on("gps:ping", async (data) => {
+    const { driver_id, session_id, lat, lng, speed, heading, accuracy } = data;
+    if (!driver_id || !session_id) return;
+
+    socket.join(`dashboard_${session_id}`); // Ensure driver can broadcast to its session
+    
+    // Broadcast gps:update to dashboard room
+    io.to(`dashboard_${session_id}`).emit("gps:update", {
+      driver_id, session_id, lat, lng, speed, heading, accuracy,
+      is_predicted: false,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  /**
+   * "gps:offline" -> driver sends buffered IndexedDB pings on reconnect
+   */
+  socket.on("gps:offline", async (data) => {
+    const { pings } = data;
+    if (!pings || !Array.isArray(pings)) return;
+    
+    console.log(`[WS] Received ${pings.length} offline pings for batch processing`);
+    // Note: Actual batch-insert is handled by the Next.js API route /api/gps/bulk-sync
+    // but the server can notify the dashboard that reconciliation occurred
+    if (pings.length > 0 && pings[0].session_id) {
+       io.to(`dashboard_${pings[0].session_id}`).emit("gps:reconciled", { count: pings.length });
+    }
+  });
+
+  /**
+   * "gps:predict" -> server emits Kalman-predicted position
+   * Triggered when a ping hasn't been received recently
+   */
+  socket.on("gps:predict", (data) => {
+    const { session_id, lat, lng, dt } = data;
+    io.to(`dashboard_${session_id}`).emit("gps:update", {
+      ...data,
+      is_predicted: true,
+      timestamp: new Date().toISOString(),
+      note: "Estimated via Kalman Filter"
+    });
+  });
+
+  // ==========================================
+
   /**
    * Dashboard subscribes to a tracking room
    * Payload: { tracking_id }

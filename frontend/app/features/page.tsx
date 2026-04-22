@@ -40,36 +40,51 @@ export default function FeaturesPage() {
                   <div className="gps-feature-pill">
                     <span className="gps-feature-pill-icon">🌐</span>
                     <div className="gps-feature-pill-content">
-                      <span className="gps-feature-pill-name">Browser Geolocation API</span>
-                      <span className="gps-feature-pill-desc">Built-in, no key needed</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
+                        <span className="gps-feature-pill-name">Live Location Engine</span>
+                        <span style={{ fontSize: 9, padding: "2px 6px", background: "var(--color-primary)", color: "#000", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>LIVE</span>
+                      </div>
+                      <span className="gps-feature-pill-desc">Pinpoints exact position instantly</span>
                     </div>
                   </div>
                   <div className="gps-feature-pill">
                     <span className="gps-feature-pill-icon">⚡</span>
                     <div className="gps-feature-pill-content">
-                      <span className="gps-feature-pill-name">Socket.IO</span>
-                      <span className="gps-feature-pill-desc">Realtime transport</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
+                        <span className="gps-feature-pill-name">Instant Signal Relay</span>
+                        <span style={{ fontSize: 9, padding: "2px 6px", background: "rgba(255,255,255,0.1)", color: "var(--color-text-secondary)", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>ALWAYS ON</span>
+                      </div>
+                      <span className="gps-feature-pill-desc">Broadcasts movement without page reloads</span>
                     </div>
                   </div>
                   <div className="gps-feature-pill">
                     <span className="gps-feature-pill-icon">🐘</span>
                     <div className="gps-feature-pill-content">
-                      <span className="gps-feature-pill-name">Supabase + PostGIS</span>
-                      <span className="gps-feature-pill-desc">Location storage, 500MB free</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
+                        <span className="gps-feature-pill-name">Smart Location Memory</span>
+                        <span style={{ fontSize: 9, padding: "2px 6px", background: "rgba(255,255,255,0.1)", color: "var(--color-text-secondary)", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>AUTO</span>
+                      </div>
+                      <span className="gps-feature-pill-desc">Stores histories for audit and playback</span>
                     </div>
                   </div>
                   <div className="gps-feature-pill">
                     <span className="gps-feature-pill-icon">💾</span>
                     <div className="gps-feature-pill-content">
-                      <span className="gps-feature-pill-name">IndexedDB</span>
-                      <span className="gps-feature-pill-desc">Offline ping buffering, built-in</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
+                        <span className="gps-feature-pill-name">Offline Journey Buffer</span>
+                        <span style={{ fontSize: 9, padding: "2px 6px", background: "var(--color-accent)", color: "#000", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>SMART</span>
+                      </div>
+                      <span className="gps-feature-pill-desc">Saves location locally when signal drops</span>
                     </div>
                   </div>
                   <div className="gps-feature-pill">
                     <span className="gps-feature-pill-icon">🧮</span>
                     <div className="gps-feature-pill-content">
-                      <span className="gps-feature-pill-name">Kalman Filter</span>
-                      <span className="gps-feature-pill-desc">Dead reckoning in pure JS</span>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
+                        <span className="gps-feature-pill-name">Smooth Path Prediction</span>
+                        <span style={{ fontSize: 9, padding: "2px 6px", background: "rgba(255,255,255,0.1)", color: "var(--color-text-secondary)", borderRadius: 4, fontWeight: 700, letterSpacing: "0.05em" }}>AI ENGINE</span>
+                      </div>
+                      <span className="gps-feature-pill-desc">Fills gaps dynamically if connection fails</span>
                     </div>
                   </div>
                 </div>
@@ -78,10 +93,11 @@ export default function FeaturesPage() {
               <div className="card-flat" style={{ position: "sticky", top: 120 }}>
                 <div style={{ fontFamily: "var(--font-data)", fontSize: 11, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-text-muted)", marginBottom: 16 }}>Key Capabilities</div>
                 <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>10-second ping intervals</span></li>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Dead reckoning prediction</span></li>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Offline ping buffering in IndexedDB</span></li>
-                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Visual distinction for predicted positions</span></li>
+                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Tracks every driver every 10 seconds automatically</span></li>
+                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Predicts position even when signal drops</span></li>
+                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Saves your route offline, syncs when back online</span></li>
+                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Shows you exactly where drivers are on the map</span></li>
+                  <li style={{ display: "flex", gap: 12, fontSize: 14, color: "var(--color-text-secondary)" }}><span style={{ color: "var(--color-primary)", fontWeight: 700 }}>→</span><span>Flags the difference between real and predicted spots</span></li>
                 </ul>
               </div>
             </div>
