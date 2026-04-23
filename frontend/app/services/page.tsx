@@ -19,7 +19,7 @@ const plans = [
     price: "Free",
     desc: "For growing operations that need AI-powered intelligence.",
     features: ["Unlimited shipments", "AI delay analysis", "Weather & traffic alerts", "Route optimization", "Astra AI assistant", "Priority support", "API access"],
-    cta: "Start Free Trial",
+    cta: "Get Started",
     highlighted: true,
   },
   {
@@ -27,7 +27,7 @@ const plans = [
     price: "Free",
     desc: "For large-scale supply chain operations with custom needs.",
     features: ["Everything in Professional", "Custom integrations", "Dedicated account manager", "SLA guarantees", "On-premise deployment", "SOC 2 compliance", "24/7 support"],
-    cta: "Contact Sales",
+    cta: "Get Started",
     highlighted: false,
   },
 ];
