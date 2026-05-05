@@ -2,15 +2,17 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import L from "leaflet";
-import { Sparkles, Navigation, Radio } from "lucide-react";
+import { Sparkles } from "lucide-react";
 
-// Fix default Leaflet icons
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "/marker-icon-2x.png",
-  iconUrl: "/marker-icon.png",
-  shadowUrl: "/marker-shadow.png",
-});
+// Fix default Leaflet icons (only in browser)
+if (typeof window !== "undefined") {
+  delete (L.Icon.Default.prototype as any)._getIconUrl;
+  L.Icon.Default.mergeOptions({
+    iconRetinaUrl: "/marker-icon-2x.png",
+    iconUrl: "/marker-icon.png",
+    shadowUrl: "/marker-shadow.png",
+  });
+}
 
 // ── Types ──
 interface Shipment {
@@ -371,12 +373,13 @@ export default function DashboardMap({ shipments, filter, onAskAstra, fitAllTrig
             // Reroute from current position
             const dest = DEST_COORDS[d.shipment.destination] || d.routeCoords[d.routeCoords.length - 1];
             fetchOSRMRoute(d.currentPos, dest).then(newRoute => {
-              if (newRoute && newRoute.length > 2 && map) {
+              const currentMap = mapRef.current;
+              if (newRoute && newRoute.length > 2 && currentMap) {
                 // Remove old route, draw new
-                if (d.routeLine) map.removeLayer(d.routeLine);
+                if (d.routeLine) currentMap.removeLayer(d.routeLine);
                 d.routeCoords = newRoute;
                 d.routeIndex = 0;
-                d.routeLine = L.polyline(newRoute, { color: "#F59E0B", weight: 3, opacity: 0.8 }).addTo(map);
+                d.routeLine = L.polyline(newRoute, { color: "#F59E0B", weight: 3, opacity: 0.8 }).addTo(currentMap);
                 // Fade to blue after 3s
                 setTimeout(() => {
                   if (d.routeLine) d.routeLine.setStyle({ color: "#3B82F6", opacity: 0.6 });
@@ -412,45 +415,23 @@ export default function DashboardMap({ shipments, filter, onAskAstra, fitAllTrig
   };
 
   return (
-    <div className="relative">
+    <div ref={containerRef} className="w-full h-full relative z-[0]">
       <style dangerouslySetInnerHTML={{ __html: MAP_CSS }} />
-
-      {/* Map Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--border)]">
-        <div className="flex items-center gap-2">
-          <Navigation className="w-4 h-4 text-[var(--text-secondary)]" />
-          <span className="text-sm font-semibold text-[var(--text)]">Live Fleet Map</span>
-          <span className="flex items-center gap-1.5 ml-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="text-xs text-emerald-400 font-medium">{activeCount} Active</span>
-          </span>
-        </div>
-        <div className="flex items-center gap-2">
-          <button onClick={toggleMode}
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium transition-colors border ${simMode ? "border-blue-500/30 bg-blue-500/10 text-blue-400" : "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"}`}>
-            <Radio className="w-3 h-3" />
-            {simMode ? "Simulation" : "Live GPS"}
-          </button>
-        </div>
-      </div>
 
       {/* Reroute banner */}
       {rerouteBanner && (
         <div className="reroute-banner">{rerouteBanner}</div>
       )}
 
-      {/* Demo banner */}
+      {/* Demo banner - z-30 per spec for map card header controls */}
       {isDemo && (
-        <div className="absolute top-[52px] left-1/2 -translate-x-1/2 z-[1000] bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-xs text-white/80 pointer-events-none">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[30] bg-black/60 backdrop-blur-md px-3 py-1 rounded-full border border-white/10 text-xs text-white/80 pointer-events-none">
           Showing demo data — connect shipments to see live tracking
         </div>
       )}
 
-      {/* Map container */}
-      <div ref={containerRef} className="w-full h-[260px] md:h-[340px] lg:h-[420px]" />
-
-      {/* Legend */}
-      <div className="absolute bottom-4 left-4 z-[1000] bg-black/70 backdrop-blur-md rounded-lg px-3 py-2.5 border border-white/10 pointer-events-none">
+      {/* Legend - z-30 per spec for map card header controls */}
+      <div className="absolute bottom-4 left-4 z-[30] bg-black/70 backdrop-blur-md rounded-lg px-3 py-2.5 border border-white/10 pointer-events-none">
         <div className="space-y-1.5">
           {[
             ["#3B82F6", "Driver (moving)", "circle"],

@@ -37,6 +37,9 @@
   --danger: #EF4444;
   --shadow: 0 1px 3px rgba(0,0,0,0.3);
   --shadow-lg: 0 10px 40px rgba(0,0,0,0.4);
+
+  /* Astra Panel sizing (used for right slide + FAB offset) */
+  --astra-panel-w: 100vw;
 }
 
 [data-theme="light"] {
@@ -55,6 +58,18 @@
   --danger: #DC2626;
   --shadow: 0 1px 3px rgba(0,0,0,0.08);
   --shadow-lg: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+@media (min-width: 640px) {
+  :root {
+    --astra-panel-w: 380px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --astra-panel-w: 420px;
+  }
 }
 
 /* ─── BASE ─── */

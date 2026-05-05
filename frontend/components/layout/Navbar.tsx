@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 import { useTheme } from "@/components/ui/ThemeProvider";
 
 const navLinks = [
@@ -39,17 +40,18 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
-                  <path d="M2 17l10 5 10-5" />
-                  <path d="M2 12l10 5 10-5" />
-                </svg>
+            <Link href="/" className="flex items-center group">
+              <div className="h-16 w-[320px] flex items-center justify-start pl-6">
+                <Image
+                  src="/astra-flow-logo.png"
+                  alt="Astra Flow"
+                  width={140}
+                  height={140}
+                  className="object-contain object-left h-full w-full scale-[2.5] translate-y-4 origin-left"
+                  unoptimized
+                  priority
+                />
               </div>
-              <span className="text-lg font-bold tracking-tight text-[var(--text)]">
-                Astra<span className="text-[var(--accent)]">Flow</span>
-              </span>
             </Link>
 
             {/* Desktop Nav Links */}

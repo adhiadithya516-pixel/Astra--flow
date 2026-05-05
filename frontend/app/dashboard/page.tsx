@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import type { CSSProperties } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import { apiGet } from "@/lib/api";
 import { useTheme } from "@/components/ui/ThemeProvider";
@@ -11,7 +13,10 @@ import AstraChat from "@/components/ui/AstraChat";
 import HealthScore from "@/components/ui/HealthScore";
 import WarRoom from "@/components/ui/WarRoom";
 import dynamic from "next/dynamic";
-const DashboardMap = dynamic(() => import("@/components/ui/DashboardMap"), { ssr: false });
+const DashboardMap = dynamic(() => import("@/components/ui/DashboardMap"), {
+  ssr: false,
+  loading: () => <MapSkeleton />,
+});
 import {
   LayoutDashboard, Package, Truck, Map, BarChart2, Bell, Settings,
   Sun, Moon, Search, AlertTriangle, Plus, Eye, Sparkles, Leaf,
@@ -67,6 +72,14 @@ const sidebarItems = [
   { icon: Settings, label: "Settings", id: "section-overview" },
 ];
 
+function MapSkeleton() {
+  return (
+    <div className="h-[260px] md:h-[340px] lg:h-[420px] w-full bg-[#1F2937] rounded-xl">
+      <div className="h-full w-full bg-[linear-gradient(90deg,#1F2937_0%,#374151_50%,#1F2937_100%)] bg-[length:200%_100%] animate-[shimmer_1.5s_infinite]" />
+    </div>
+  );
+}
+
 export default function DashboardPage() {
   const router = useRouter();
   const { theme, toggle } = useTheme();
@@ -77,12 +90,31 @@ export default function DashboardPage() {
   const [now, setNow] = useState(new Date());
   const [loading, setLoading] = useState(true);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [warRoomOpen, setWarRoomOpen] = useState(false);
   const [astraPrompt, setAstraPrompt] = useState<string | undefined>();
   const [searchQuery, setSearchQuery] = useState("");
   const [mapFilter, setMapFilter] = useState<"all" | "at-risk" | "delayed">("all");
   const [fitAllTrigger, setFitAllTrigger] = useState(0);
   const [activeSection, setActiveSection] = useState("section-overview");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    const saved = localStorage.getItem("sidebar-collapsed");
+    if (saved === null) {
+      const shouldCollapse =
+        typeof window !== "undefined" &&
+        window.matchMedia("(min-width: 640px) and (max-width: 1023px)").matches;
+      setSidebarCollapsed(shouldCollapse);
+    } else {
+      setSidebarCollapsed(saved === "true");
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("sidebar-collapsed", sidebarCollapsed.toString());
+  }, [sidebarCollapsed]);
 
   const loadData = useCallback(async () => {
     try {
@@ -125,21 +157,37 @@ export default function DashboardPage() {
   function truncate(str: string, n: number) { if (!str) return ""; const p = str.split(","); return p[0].length > n ? p[0].slice(0, n) + "\u2026" : p[0]; }
   function timeAgo(ts: string) { if (!ts) return ""; const d = (now.getTime() - new Date(ts).getTime()) / 1000; if (d < 60) return `${Math.floor(d)}s ago`; if (d < 3600) return `${Math.floor(d / 60)}m ago`; return `${Math.floor(d / 3600)}h ago`; }
 
+  if (!mounted) return null;
+
   return (
-    <div className="flex h-screen overflow-hidden bg-[var(--bg)]">
-      {/* Sidebar */}
-      <aside className={`hidden lg:flex flex-col border-r border-[var(--border)] bg-[var(--surface)] transition-all duration-300 ${sidebarCollapsed ? "w-16" : "w-56"}`}>
-        <div className="flex items-center gap-2 p-4 border-b border-[var(--border)]">
-          <div className="w-8 h-8 rounded-lg bg-[var(--accent)] flex items-center justify-center flex-shrink-0">
-            <Package className="w-4 h-4 text-white" />
+    <>
+    <div
+      className="dashboard-root h-screen overflow-hidden bg-[var(--bg)] grid grid-rows-[64px_1fr] grid-cols-1 lg:[grid-template-columns:var(--sidebar-w)_1fr]"
+      style={
+        {
+          ["--sidebar-w" as any]: sidebarCollapsed ? "64px" : "240px",
+        } as CSSProperties
+      }
+    >
+      {/* Sidebar - Desktop */}
+      <aside className="hidden lg:flex flex-col border-r border-[var(--border)] bg-[var(--surface)] transition-[width] duration-250 w-full row-span-2">
+        <div className={`flex items-center h-[63px] border-b border-[var(--border)] overflow-hidden transition-all duration-250 ${sidebarCollapsed ? 'px-4 justify-center' : 'px-4'}`}>
+          <div className="relative h-14 flex-shrink-0 transition-all duration-250" style={{ width: sidebarCollapsed ? '56px' : '220px' }}>
+            <Image
+              src="/astra-flow-logo.png"
+              alt="Astra Flow"
+              fill
+              className={`object-left ${sidebarCollapsed ? 'object-center origin-center' : 'object-left origin-left'} object-contain scale-[2.5] translate-y-4 translate-x-5`}
+              unoptimized
+              priority
+            />
           </div>
-          {!sidebarCollapsed && <span className="font-bold text-sm text-[var(--text)]">Astra Flow</span>}
         </div>
         <nav className="flex-1 py-4 px-2 space-y-1">
           {sidebarItems.map((item) => (
             <button key={item.label} onClick={() => { setActiveSection(item.id); document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth", block: "start" }); }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${activeSection === item.id ? "bg-[var(--accent)]/10 text-[var(--accent)] font-semibold" : "text-[var(--text-secondary)] hover:bg-[var(--surface-elevated)] hover:text-[var(--text)]"}`}>
               <item.icon className="w-4.5 h-4.5 flex-shrink-0" />
-              {!sidebarCollapsed && <span>{item.label === "section-overview" ? "Settings" : item.label}</span>}
+              {!sidebarCollapsed && <span>{item.label}</span>}
             </button>
           ))}
         </nav>
@@ -148,42 +196,79 @@ export default function DashboardPage() {
         </button>
       </aside>
 
-      <div className="flex-1 flex flex-col overflow-hidden">
-
-        {/* Top bar */}
-        <header className="flex items-center justify-between px-6 py-3 border-b border-[var(--border)] bg-[var(--surface)]">
-          <div className="flex items-center gap-4">
-            <div>
-              <h1 className="text-lg font-bold text-[var(--text)]">Control Tower</h1>
-              <p className="text-xs text-[var(--text-muted)]">{now.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric" })} &middot; {now.toLocaleTimeString("en-IN")}</p>
+      {/* Mobile Sidebar Drawer */}
+      {sidebarOpen && (
+        <>
+          <div className="fixed inset-0 z-[59] bg-black/60 lg:hidden" onClick={() => setSidebarOpen(false)} />
+          <aside className="fixed left-0 top-0 h-screen w-60 z-[60] flex flex-col border-r border-[var(--border)] bg-[var(--surface)] lg:hidden">
+            <div className="flex items-center justify-between p-4 border-b border-[var(--border)] h-[64px]">
+              <div className="relative h-14 w-[220px] flex-shrink-0">
+                <Image
+                  src="/astra-flow-logo.png"
+                  alt="Astra Flow"
+                  fill
+                  className="object-contain object-left scale-[2.5] translate-y-4 translate-x-5 origin-left"
+                  unoptimized
+                  priority
+                />
+              </div>
+              <button onClick={() => setSidebarOpen(false)} className="w-8 h-8 rounded-lg border border-[var(--border)] flex items-center justify-center hover:bg-[var(--surface-elevated)] transition-colors">
+                <X className="w-4 h-4 text-[var(--text-secondary)]" />
+              </button>
             </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg)]">
-              <Search className="w-4 h-4 text-[var(--text-muted)]" />
-              <input type="text" placeholder="Search shipments..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="bg-transparent text-sm text-[var(--text)] outline-none w-40 placeholder:text-[var(--text-muted)]" />
-            </div>
-            <button onClick={() => setWarRoomOpen(true)} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition-colors">
-              <AlertTriangle className="w-3.5 h-3.5" /> War Room
-            </button>
-            <button className="relative w-8 h-8 rounded-lg border border-[var(--border)] flex items-center justify-center hover:bg-[var(--surface-elevated)] transition-colors">
-              <Bell className="w-4 h-4 text-[var(--text-secondary)]" />
-              {alerts.length > 0 && <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">{Math.min(alerts.length, 9)}</span>}
-            </button>
-            <button onClick={toggle} className="w-8 h-8 rounded-lg border border-[var(--border)] flex items-center justify-center hover:bg-[var(--surface-elevated)] transition-colors" aria-label="Toggle theme">
-              {theme === "dark" ? <Sun className="w-4 h-4 text-[var(--text-secondary)]" /> : <Moon className="w-4 h-4 text-[var(--text-secondary)]" />}
-            </button>
-            <Link href="/" className="w-8 h-8 rounded-lg border border-[var(--border)] flex items-center justify-center hover:bg-[var(--surface-elevated)] transition-colors"><Home className="w-4 h-4 text-[var(--text-secondary)]" /></Link>
-          </div>
-        </header>
+            <nav className="flex-1 py-4 px-2 space-y-1">
+              {sidebarItems.map((item) => (
+                <button key={item.label} onClick={() => { setActiveSection(item.id); setSidebarOpen(false); document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth", block: "start" }); }} className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${activeSection === item.id ? "bg-[var(--accent)]/10 text-[var(--accent)] font-semibold" : "text-[var(--text-secondary)] hover:bg-[var(--surface-elevated)] hover:text-[var(--text)]"}`}>
+                  <item.icon className="w-4.5 h-4.5 flex-shrink-0" />
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </nav>
+          </aside>
+        </>
+      )}
 
-        <main className="flex-1 overflow-y-auto p-6 custom-scrollbar">
-          {/* Stats row - 5 cards */}
+      {/* Top Bar - z-40 per spec */}
+      <header className="flex items-center justify-between px-6 border-b border-[var(--border)] bg-[var(--surface)] sticky top-0 z-[40] h-16 flex-shrink-0 col-span-1 lg:col-start-2">
+        <div className="flex items-center gap-4">
+          <button onClick={() => setSidebarOpen(true)} className="lg:hidden w-8 h-8 rounded-lg border border-[var(--border)] flex items-center justify-center hover:bg-[var(--surface-elevated)] transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className="text-[var(--text-secondary)]">
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <div>
+            <h1 className="text-lg font-bold text-[var(--text)]">Control Tower</h1>
+            <p className="text-xs text-[var(--text-muted)]">{now.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short", year: "numeric" })} &middot; {now.toLocaleTimeString("en-IN")}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[var(--border)] bg-[var(--bg)]">
+            <Search className="w-4 h-4 text-[var(--text-muted)]" />
+            <input type="text" placeholder="Search shipments..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="bg-transparent text-sm text-[var(--text)] outline-none w-40 placeholder:text-[var(--text-muted)]" />
+          </div>
+          <button onClick={() => setWarRoomOpen(true)} className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold transition-colors">
+            <AlertTriangle className="w-3.5 h-3.5" /> War Room
+          </button>
+          <button className="relative w-8 h-8 rounded-lg border border-[var(--border)] flex items-center justify-center hover:bg-[var(--surface-elevated)] transition-colors">
+            <Bell className="w-4 h-4 text-[var(--text-secondary)]" />
+            {alerts.length > 0 && <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">{Math.min(alerts.length, 9)}</span>}
+          </button>
+          <button onClick={toggle} className="w-8 h-8 rounded-lg border border-[var(--border)] flex items-center justify-center hover:bg-[var(--surface-elevated)] transition-colors" aria-label="Toggle theme">
+            {theme === "dark" ? <Sun className="w-4 h-4 text-[var(--text-secondary)]" /> : <Moon className="w-4 h-4 text-[var(--text-secondary)]" />}
+          </button>
+          <Link href="/" className="w-8 h-8 rounded-lg border border-[var(--border)] flex items-center justify-center hover:bg-[var(--surface-elevated)] transition-colors"><Home className="w-4 h-4 text-[var(--text-secondary)]" /></Link>
+        </div>
+      </header>
+
+        <main className="content-area overflow-y-auto h-full flex flex-col gap-6 p-6 custom-scrollbar col-span-1 lg:col-start-2">
+          {/* Overview Cards - 4 cards */}
           <div id="section-overview">
           {loading ? (
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">{[1,2,3,4,5].map(i => <SkeletonCard key={i} />)}</div>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">{[1,2,3,4].map(i => <SkeletonCard key={i} />)}</div>
           ) : stats && (
-            <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 { label: "Active Shipments", value: stats.active_shipments, icon: Package, trend: "+12%", up: true },
                 { label: "Delayed", value: stats.offline_drivers, icon: AlertTriangle, trend: stats.offline_drivers > 0 ? "Needs action" : "Clear", up: stats.offline_drivers === 0, danger: stats.offline_drivers > 0 },
@@ -202,17 +287,21 @@ export default function DashboardPage() {
                   </div>
                 </div>
               ))}
-              {/* Health Score card */}
-              <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-4 flex items-center justify-center animate-fade-in" style={{ animationDelay: "200ms" }}>
-                <HealthScore onTimeRate={stats.on_time_rate} criticalAlerts={alerts.filter(a => a.severity === "critical").length} activeShipments={stats.active_shipments} totalShipments={shipments.length || 1} />
-              </div>
             </div>
           )}
           </div>
 
-          {/* Map Section */}
-          <div id="section-map" className="mb-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] overflow-hidden">
-            <div className="flex items-center justify-between px-4 py-2 border-b border-[var(--border)]">
+          {/* Map Card */}
+          <div id="section-map" className="map-card w-full bg-[#111827] rounded-xl border border-[#1F2937] overflow-hidden">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[#1F2937] relative z-[30]">
+              <div className="flex items-center gap-2">
+                <Map className="w-4 h-4 text-[var(--text-secondary)]" />
+                <span className="text-sm font-semibold text-[var(--text)]">Live Fleet Map</span>
+                <span className="flex items-center gap-1.5 ml-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <span className="text-xs text-emerald-400 font-medium">{filteredShipments.length} Active</span>
+                </span>
+              </div>
               <div className="flex gap-2">
                 {(["all", "at-risk", "delayed"] as const).map(f => (
                   <button 
@@ -231,16 +320,18 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
-            <DashboardMap 
-              shipments={filteredShipments} 
-              filter={mapFilter} 
-              onAskAstra={(prompt) => setAstraPrompt(prompt)}
-              fitAllTrigger={fitAllTrigger}
-            />
+            <div className="w-full h-[260px] md:h-[340px] lg:h-[420px] overflow-hidden relative">
+              <DashboardMap 
+                shipments={filteredShipments} 
+                filter={mapFilter} 
+                onAskAstra={(prompt) => setAstraPrompt(prompt)}
+                fitAllTrigger={fitAllTrigger}
+              />
+            </div>
           </div>
 
-          {/* Table + Alerts */}
-          <div id="section-shipments" className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Bottom Row - Table + Alerts */}
+          <div id="section-shipments" className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-sm font-semibold text-[var(--text)]">Shipments</h2>
@@ -323,13 +414,13 @@ export default function DashboardPage() {
             </div>
           </div>
         </main>
-      </div>
 
       {/* War Room overlay */}
       {warRoomOpen && <WarRoom shipments={shipments} onClose={() => setWarRoomOpen(false)} onAskAstra={(prompt) => { setWarRoomOpen(false); setAstraPrompt(prompt); }} />}
-
-      {/* Astra AI Chat */}
-      <AstraChat initialPrompt={astraPrompt} onClose={() => setAstraPrompt(undefined)} />
     </div>
+
+    {/* Astra AI Chat - positioned completely outside grid */}
+    <AstraChat initialPrompt={astraPrompt} onClose={() => setAstraPrompt(undefined)} />
+    </>
   );
 }
